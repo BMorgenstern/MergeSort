@@ -23,15 +23,7 @@ def MergeSort(src_array, splitby=2, debug=False):
 		if debug:
 			print("Split into "+ str(subarray))
 		sorted = Merge(sorted,MergeSort(subarray,splitby,debug),debug)
-	'''
-	midpoint = int(len(src_array)/2)
-	if debug:
-		print("Creating left sub-array")
-	lsub = MergeSort(src_array[:midpoint], debug)
-	if debug:
-		print("Creating right sub-array")
-	rsub = MergeSort(src_array[midpoint:], debug)
-	'''
+	
 	return sorted
 
 def Merge(llist, rlist,debug=False):
