@@ -1,21 +1,53 @@
-def MergeSort(src_array):
-	if len(src_array) < 2:
-		return src_array
-	midpoint = int(len(src_array)/2)
-	lsub = MergeSort(src_array[:midpoint])
-	rsub = MergeSort(src_array[midpoint:])
-	return Merge(lsub, rsub)
+def splitbyn(listvar, parts):
+	newlist = []
+	midpoint = int(len(listvar)/parts)
+	if int(len(listvar)%parts) >= int(parts/2):
+		midpoint += 1
+	pos = 0
+	for i in range(1,parts):
+		nextsl = pos+midpoint
+		newlist.append(listvar[pos:nextsl])
+		pos = nextsl
+	newlist.append(listvar[pos:])
+	return newlist
 
-def Merge(llist, rlist):
+
+def MergeSort(src_array, splitby=2, debug=False):
+	sorted = []
+	if len(src_array) < 2: 
+		return src_array
+	elif splitby < 2:
+		print("Cannot split into less than 2 parts")
+		return src_array
+	for subarray in splitbyn(src_array, splitby):
+		if debug:
+			print("Split into "+ str(subarray))
+		sorted = Merge(sorted,MergeSort(subarray,splitby,debug),debug)
+	'''
+	midpoint = int(len(src_array)/2)
+	if debug:
+		print("Creating left sub-array")
+	lsub = MergeSort(src_array[:midpoint], debug)
+	if debug:
+		print("Creating right sub-array")
+	rsub = MergeSort(src_array[midpoint:], debug)
+	'''
+	return sorted
+
+def Merge(llist, rlist,debug=False):
 	retlist = []
 	
 	while(len(llist) > 0 and len(rlist) > 0):
 		if llist[0] < rlist[0]:
 			retlist.append(llist[0])
+			if debug:
+				print(str(llist[0])+' taken from left over '+str(rlist[0]))
 			del llist[0]
 
 		else:
 			retlist.append(rlist[0])
+			if debug:
+				print(str(rlist[0])+' taken from right over '+str(llist[0]))
 			del rlist[0]
 				
 	return retlist+llist+rlist
